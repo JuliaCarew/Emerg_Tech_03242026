@@ -1,27 +1,36 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "NPCCharacter.h"
+#include "Engine/Engine.h"
+#include "Kismet/KismetSystemLibrary.h"
 
-// Sets default values
 ANPCCharacter::ANPCCharacter()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
-void ANPCCharacter::BeginPlay()
+void ANPCCharacter::TriggerInteraction()
 {
-	Super::BeginPlay();
-	
+	IInteractInterface::Execute_Interact(this);
 }
 
-// Called every frame
-void ANPCCharacter::Tick(float DeltaTime)
+void ANPCCharacter::RunDialogue()
 {
-	Super::Tick(DeltaTime);
-
+	TriggerInteraction();
 }
 
+void ANPCCharacter::Interact_Implementation()
+{
+	const FString Message = DialogueText.IsEmpty() ? TEXT("...") : DialogueText;
+
+	UE_LOG(LogTemp, Log, TEXT("NPC Interact: %s"), *Message);
+
+	UKismetSystemLibrary::PrintString(this, Message, true, true, FLinearColor::Green, 5.0f);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			5.f,
+			FColor::Green,
+			Message);
+	}
+}

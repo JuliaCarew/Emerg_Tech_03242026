@@ -1,26 +1,27 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
+#include "InteractInterface.h"
 #include "NPCCharacter.generated.h"
 
-UCLASS()
-class EMERG_TECH_03242026_API ANPCCharacter : public AActor
+UCLASS(Blueprintable, BlueprintType)
+class EMERG_TECH_03242026_API ANPCCharacter : public ACharacter, public IInteractInterface
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
 	ANPCCharacter();
 
+	UFUNCTION(BlueprintCallable, Category = "Emerg Tech|Interaction", meta = (DisplayName = "Trigger Interaction", Keywords = "emerg interact dialogue npc"))
+	void TriggerInteraction();
+
+	UFUNCTION(BlueprintCallable, Category = "Emerg Tech|Dialogue", meta = (DisplayName = "Run Dialogue", Keywords = "emerg interact dialogue npc"))
+	void RunDialogue();
+
+	virtual void Interact_Implementation() override;
+
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	FString DialogueText = TEXT("Hello traveler!");
 };

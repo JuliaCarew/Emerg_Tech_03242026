@@ -1,15 +1,20 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/Interface.h"
+#include "InteractInterface.generated.h"
 
-/**
- * 
- */
-class EMERG_TECH_03242026_API InteractInterface
+UINTERFACE(MinimalAPI, BlueprintType)
+class UInteractInterface : public UInterface
 {
+	GENERATED_BODY()
+};
+
+class EMERG_TECH_03242026_API IInteractInterface
+{
+	GENERATED_BODY()
+
 public:
-	InteractInterface();
-	~InteractInterface();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void Interact();
 };
